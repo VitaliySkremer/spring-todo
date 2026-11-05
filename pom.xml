@@ -8,8 +8,8 @@
   <name>ToDoListWebApplication Webapp</name>
 
   <properties>
-    <spring.version>5.3.29</spring.version>
-    <servlet.version>4.0.1</servlet.version>
+    <spring.version>7.0.9</spring.version>
+    <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
   </properties>
 
   <dependencies>
@@ -20,9 +20,9 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${servlet.version}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${jakarta.servlet.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
