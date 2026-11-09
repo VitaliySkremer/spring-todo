@@ -8,6 +8,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class RecordDao {
@@ -21,5 +22,22 @@ public class RecordDao {
 
     public List<Record> findAll() {
         return new ArrayList<>(records);
+    }
+
+    public void addRecord(Record record) {
+        this.records.add(record);
+    }
+
+    public void makeRecordStatus(UUID id, RecordStatus newStatus) {
+        for (Record record : records) {
+            if (record.getId().equals(id)) {
+                record.setStatus(newStatus);
+                break;
+            }
+        }
+    }
+
+    public void deleteRecord(UUID id) {
+        records.removeIf(record -> record.getId().equals(id));
     }
 }
