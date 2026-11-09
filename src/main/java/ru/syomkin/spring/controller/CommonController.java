@@ -6,11 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.syomkin.spring.entity.Record;
-import ru.syomkin.spring.entity.RecordStatus;
+import ru.syomkin.spring.entity.dto.RecordsContainerDto;
 import ru.syomkin.spring.services.RecordService;
 
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -29,23 +27,15 @@ public class CommonController {
     }
 
     @RequestMapping("/home")
-    public String getMainPage(Model model) {
-        List<Record> records = recordService.findAll();
+    public String getMainPage(
+            Model model,
+            @RequestParam(value = "filter", required = false, defaultValue = "all") String filter
+    ) {
+        RecordsContainerDto recordsContainerDto = recordService.findAll(filter);
 
-        int numberOfDoneItems = 0;
-        int numberOfActiveItems = 0;
-
-        for (Record record : records) {
-            if (record.getStatus().equals(RecordStatus.DONE)) {
-                numberOfDoneItems++;
-            } else {
-                numberOfActiveItems++;
-            }
-        }
-
-        model.addAttribute("records", records);
-        model.addAttribute("numberOfDoneItems", numberOfDoneItems);
-        model.addAttribute("numberOfActiveItems", numberOfActiveItems);
+        model.addAttribute("records", recordsContainerDto.getRecords());
+        model.addAttribute("numberOfDoneItems", recordsContainerDto.getNumberOfDoneRecords());
+        model.addAttribute("numberOfActiveItems", recordsContainerDto.getNumberOfActiveRecords());
 
         return "main-page";
     }
@@ -58,16 +48,22 @@ public class CommonController {
     }
 
     @RequestMapping(value = "/make-record-done", method = RequestMethod.POST)
-    public String makeRecordDone(@RequestParam("id") UUID id) {
+    public String makeRecordDone(@RequestParam("id") UUID id,
+                                 @RequestParam(value = "filter", required = false) String filter) {
         recordService.makeRecordDone(id);
 
-        return "redirect:/home";
+        return "redirect:/home" + generateFilterParam(filter);
     }
 
     @RequestMapping(value = "/delete-record", method = RequestMethod.POST)
-    public String deleteRecord(@RequestParam("id") UUID id) {
+    public String deleteRecord(@RequestParam("id") UUID id,
+                               @RequestParam(value = "filter", required = false) String filter) {
         recordService.deleteRecord(id);
 
-        return "redirect:/home";
+        return "redirect:/home" + generateFilterParam(filter);
+    }
+
+    public String generateFilterParam(String filterParam) {
+        return filterParam == null || filterParam.isBlank() ? "" : "?filter=" + filterParam;
     }
 }
