@@ -1,17 +1,22 @@
 package ru.syomkin.spring.config;
 
+import jakarta.persistence.EntityManagerFactory;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 @PropertySource("classpath:/application.properties")
 public class DatabaseConfig {
     @Value("${db.driver}")
@@ -35,14 +40,31 @@ public class DatabaseConfig {
     @Value("${hibernate.hbm2ddl.auto}")
     private String hibernateHbm2DdlAuto;
 
+    @Value("${db.connection-pool.initial-size}")
+    private int connectionPoolInitialSize;
+
+    @Value("${db.connection-pool.min-idle}")
+    private int connectionPoolMinIdle;
+
+    @Value("${db.connection-pool.max-idle}")
+    private int connectionPoolMaxIdle;
+
+    @Value("${db.connection-pool.max-total}")
+    private int connectionPoolMaxTotal;
+
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setDriverClassName(databaseDriver);
         dataSource.setUrl(databaseUrl);
         dataSource.setUsername(databaseUsername);
         dataSource.setPassword(databasePassword);
+
+        dataSource.setInitialSize(connectionPoolInitialSize);
+        dataSource.setMinIdle(connectionPoolMinIdle);
+        dataSource.setMaxIdle(connectionPoolMaxIdle);
+        dataSource.setMaxTotal(connectionPoolMaxTotal);
 
         return dataSource;
     }
@@ -57,6 +79,13 @@ public class DatabaseConfig {
         entityManager.setJpaProperties(getHibernateProperties());
 
         return entityManager;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory  entityManagerFactory) {
+        JpaTransactionManager manager = new JpaTransactionManager();
+        manager.setEntityManagerFactory(entityManagerFactory);
+        return manager;
     }
 
     private Properties getHibernateProperties() {

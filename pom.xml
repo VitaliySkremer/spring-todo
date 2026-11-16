@@ -15,6 +15,7 @@
     <postgresql.version>42.7.14</postgresql.version>
     <hibernate.version>7.4.15.Final</hibernate.version>
     <jakarta.persistence.version>3.2.0</jakarta.persistence.version>
+    <apache.dbcp.vesersion>2.14.0</apache.dbcp.vesersion>
   </properties>
 
   <dependencies>
@@ -64,6 +65,12 @@
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
       <version>${jakarta.persistence.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>${apache.dbcp.vesersion}</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>

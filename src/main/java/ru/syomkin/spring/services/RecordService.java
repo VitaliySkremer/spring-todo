@@ -2,6 +2,7 @@ package ru.syomkin.spring.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.syomkin.spring.dao.RecordDao;
 import ru.syomkin.spring.entity.Record;
 import ru.syomkin.spring.entity.RecordStatus;
@@ -9,10 +10,10 @@ import ru.syomkin.spring.entity.dto.RecordsContainerDto;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class RecordService {
     private final RecordDao recordDao;
 
@@ -21,6 +22,7 @@ public class RecordService {
         this.recordDao = recordDao;
     }
 
+    @Transactional(readOnly = true)
     public RecordsContainerDto findAll(String filter) {
         List<Record> recordList = recordDao.findAll();
 
