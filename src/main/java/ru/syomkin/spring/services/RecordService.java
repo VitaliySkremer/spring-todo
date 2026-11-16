@@ -63,11 +63,11 @@ public class RecordService {
         recordDao.addRecord(new Record(titleNormalized));
     }
 
-    public void makeRecordDone(UUID id) {
+    public void makeRecordDone(int id) {
         recordDao.makeRecordStatus(id, RecordStatus.DONE);
     }
 
-    public void deleteRecord(UUID id) {
+    public void deleteRecord(int id) {
         recordDao.deleteRecord(id);
     }
 }

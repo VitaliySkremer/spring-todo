@@ -1,30 +1,42 @@
 package ru.syomkin.spring.entity;
 
-import java.util.UUID;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "records")
 public class Record {
-    private final UUID id;
-    private final String title;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "title", nullable = false, length = 100)
+    private String title;
+
+    @Column(name = "status", nullable = false)
     private RecordStatus status;
 
+    public Record() {
+    }
+
     public Record(String title) {
-        id = UUID.randomUUID();
         this.title = title;
         this.status = RecordStatus.ACTIVE;
     }
 
-    public Record(String title, RecordStatus status) {
-        id = UUID.randomUUID();
-        this.title = title;
-        this.status = status;
+    public int getId() {
+        return id;
     }
 
-    public UUID getId() {
-        return id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public RecordStatus getStatus() {

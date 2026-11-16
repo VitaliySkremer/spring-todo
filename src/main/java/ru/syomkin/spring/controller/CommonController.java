@@ -48,7 +48,7 @@ public class CommonController {
     }
 
     @RequestMapping(value = "/make-record-done", method = RequestMethod.POST)
-    public String makeRecordDone(@RequestParam("id") UUID id,
+    public String makeRecordDone(@RequestParam("id") int id,
                                  @RequestParam(value = "filter", required = false) String filter) {
         recordService.makeRecordDone(id);
 
@@ -56,7 +56,7 @@ public class CommonController {
     }
 
     @RequestMapping(value = "/delete-record", method = RequestMethod.POST)
-    public String deleteRecord(@RequestParam("id") UUID id,
+    public String deleteRecord(@RequestParam("id") int id,
                                @RequestParam(value = "filter", required = false) String filter) {
         recordService.deleteRecord(id);
 

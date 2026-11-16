@@ -12,6 +12,9 @@
     <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
     <jstl.version>3.0.0</jstl.version>
     <glassfish.version>3.0.1</glassfish.version>
+    <postgresql.version>42.7.14</postgresql.version>
+    <hibernate.version>7.4.15.Final</hibernate.version>
+    <jakarta.persistence.version>3.2.0</jakarta.persistence.version>
   </properties>
 
   <dependencies>
@@ -36,6 +39,32 @@
       <groupId>org.glassfish.web</groupId>
       <artifactId>jakarta.servlet.jsp.jstl</artifactId>
       <version>${glassfish.version}</version>
+    </dependency>
+
+    <!--  DB  -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
+      <version>${jakarta.persistence.version}</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <build>
